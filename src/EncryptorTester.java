@@ -7,12 +7,12 @@ public class EncryptorTester
         // ---- TEST PART A: fillBlock ----
         // --------------------------------
         System.out.println("---- TESTING PART A ----");
-        Encryptor encryptor1 = new Encryptor(3, 5);
+        Encryptor encryptor1 = new Encryptor(4, 1);
         System.out.println(encryptor1.encryptMessage("bob the builder built bobbers"));
         System.out.println(encryptor1.decryptMessage(encryptor1.encryptMessage("bob the builder built bobbers")));
         System.out.println(encryptor1.decryptMessage(""));
-        System.out.println(encryptor1.superEncryptMessage("bob the builder built bobbers"));
-        System.out.println(encryptor1.superDecryptMessage("bbbbAAAAAouubAAAAAbiieAAAAA llrAAAAAtdtsAAAAAhe AAAAAAerbAAAAAA  oAAAAAA"));
+        System.out.println(encryptor1.superEncryptMessage(""));
+        System.out.println(encryptor1.superDecryptMessage(encryptor1.superEncryptMessage("bob the builder built bobbers")));
     }
     public static void print2DArray(String[][] arr)
     {

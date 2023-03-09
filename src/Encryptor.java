@@ -185,7 +185,10 @@ public class Encryptor
             {
                 for (int c = 0;c<letterBlock[0].length;c++)
                 {
-                    unencrypted+=letterBlock[r][c].substring(0,1);
+                    if (!(letterBlock[r][c].equals("A")))
+                    {
+                        unencrypted+=letterBlock[r][c].substring(0,1);
+                    }
                 }
             }
             last = i+(numRows*numCols);
@@ -225,14 +228,14 @@ public class Encryptor
     }
     public void superDeFillBlock(String str)
     {
-        int counter =1;
-        for (int c = 0;c<letterBlock[0].length;c+=2)
+        int counter =0;
+        for (int c = 0;c<letterBlock[0].length;c+=1)
         {
-            for (int r = 0;r<letterBlock.length;r+=2)
+            for (int r = 0;r<letterBlock.length;r+=1)
             {
-                if (counter<=str.length())
+                if (counter<str.length())
                 {
-                    letterBlock[r][c] = str.substring(counter-1,counter);
+                    letterBlock[r][c] = str.substring(counter,counter+1);
                     counter+=2;
                 }
                 else
