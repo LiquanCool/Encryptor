@@ -118,30 +118,128 @@ public class Encryptor
         int last = 0;
         for (int i = 0;i<encryptedMessage.length()-(numCols*numRows);i+=(numRows*numCols))
         {
-            fillBlock(encryptedMessage.substring(i,i+(numCols*numRows)));
-            for (int c = 0;c<letterBlock[0].length;c++)
+            deFillBlock(encryptedMessage.substring(i,i+(numCols*numRows)));
+            for (int r = 0;r<letterBlock.length;r++)
             {
-                for (int r = 0;r<letterBlock.length;r++)
+                for (int c = 0;c<letterBlock[0].length;c++)
                 {
-                    if (!(letterBlock[c][r].equals("A")))
-                    {
-                        unencrypted+=letterBlock[c][r];
-                    }
+                    unencrypted+=letterBlock[r][c];
                 }
             }
             last = i+(numRows*numCols);
         }
-        fillBlock(encryptedMessage.substring(last));
-        for (int c = 0;c<letterBlock[0].length;c++)
+        deFillBlock(encryptedMessage.substring(last));
+        for (int r = 0;r<letterBlock.length;r++)
         {
-            for (int r = 0;r<letterBlock.length;r++)
+            for (int c = 0;c<letterBlock[0].length;c++)
             {
-                if (!(letterBlock[c][r].equals("A")))
+                if (!(letterBlock[r][c].equals("A")))
                 {
-                    unencrypted+=letterBlock[c][r];
+                    unencrypted+=letterBlock[r][c];
                 }
             }
         }
         return unencrypted;
+    }
+    public void deFillBlock(String str)
+    {
+        int counter =1;
+        for (int c = 0;c<letterBlock[0].length;c++)
+        {
+            for (int r = 0;r<letterBlock.length;r++)
+            {
+                if (counter<=str.length())
+                {
+                    letterBlock[r][c] = str.substring(counter-1,counter);
+                    counter++;
+                }
+                else
+                {
+                    letterBlock[r][c] = "A";
+                }
+            }
+        }
+    }
+    public String superEncryptMessage(String message)
+    {
+        String encrypted = "";
+        int last = 0;
+        for (int i = 0;i<message.length()-(numCols*numRows);i+=(numRows*numCols))
+        {
+            superFillBlock(message.substring(i,i+(numCols*numRows)));
+            encrypted+=encryptBlock();
+            last = i+(numRows*numCols);
+        }
+        superFillBlock(message.substring(last));
+        encrypted+=encryptBlock();
+        return encrypted;
+    }
+    public String superDecryptMessage(String encryptedMessage)
+    {
+        String unencrypted = "";
+        int last = 0;
+        for (int i = 0;i<encryptedMessage.length()-(numCols*numRows);i+=(numRows*numCols))
+        {
+            superDeFillBlock(encryptedMessage.substring(i,i+(numCols*numRows)));
+            for (int r = 0;r<letterBlock.length;r++)
+            {
+                for (int c = 0;c<letterBlock[0].length;c++)
+                {
+                    unencrypted+=letterBlock[r][c].substring(0,1);
+                }
+            }
+            last = i+(numRows*numCols);
+        }
+        superDeFillBlock(encryptedMessage.substring(last));
+        for (int r = 0;r<letterBlock.length;r++)
+        {
+            for (int c = 0;c<letterBlock[0].length;c++)
+            {
+                if (!(letterBlock[r][c].equals("A")))
+                {
+                    unencrypted+=letterBlock[r][c].substring(0,1);
+                }
+            }
+        }
+        return unencrypted;
+    }
+    public void superFillBlock(String str)
+    {
+        int counter =1;
+        for (int j = 0;j<letterBlock.length;j++)
+        {
+            for (int k = 0;k<letterBlock[0].length;k++)
+            {
+                if (counter<=str.length())
+                {
+                    int randomIndex = (int)(Math.random()*str.length());
+                    letterBlock[j][k] = str.substring(counter-1,counter)+str.substring(randomIndex,randomIndex+1);
+                    counter++;
+                }
+                else
+                {
+                    letterBlock[j][k] = "A";
+                }
+            }
+        }
+    }
+    public void superDeFillBlock(String str)
+    {
+        int counter =1;
+        for (int c = 0;c<letterBlock[0].length;c+=2)
+        {
+            for (int r = 0;r<letterBlock.length;r+=2)
+            {
+                if (counter<=str.length())
+                {
+                    letterBlock[r][c] = str.substring(counter-1,counter);
+                    counter+=2;
+                }
+                else
+                {
+                    letterBlock[r][c] = "A";
+                }
+            }
+        }
     }
 }
