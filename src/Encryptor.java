@@ -133,10 +133,18 @@ public class Encryptor
         {
             for (int c = 0;c<letterBlock[0].length;c++)
             {
-                if (!(letterBlock[r][c].equals("A")))
-                {
                     unencrypted+=letterBlock[r][c];
-                }
+
+            }
+        }
+        for (int i = unencrypted.length()-1;i>=0;i--)
+        {
+            if (unencrypted.substring(i,i+1).equals("A"))
+            {
+                unencrypted=unencrypted.substring(0,i);
+            }
+            else {
+                break;
             }
         }
         return unencrypted;
@@ -178,9 +186,18 @@ public class Encryptor
     {
         String unencrypted = "";
         int last = 0;
+        boolean first =true;
         for (int i = 0;i<encryptedMessage.length()-(numCols*numRows);i+=(numRows*numCols))
         {
-            superDeFillBlock(encryptedMessage.substring(i,i+(numCols*numRows)));
+            superDeFillBlock(encryptedMessage.substring(i,i+(numCols*numRows)), first);
+            if (first)
+            {
+                first =false;
+            }
+            else
+            {
+                first =true;
+            }
             for (int r = 0;r<letterBlock.length;r++)
             {
                 for (int c = 0;c<letterBlock[0].length;c++)
@@ -193,15 +210,22 @@ public class Encryptor
             }
             last = i+(numRows*numCols);
         }
-        superDeFillBlock(encryptedMessage.substring(last));
+        superDeFillBlock(encryptedMessage.substring(last),first);
         for (int r = 0;r<letterBlock.length;r++)
         {
             for (int c = 0;c<letterBlock[0].length;c++)
             {
-                if (!(letterBlock[r][c].equals("A")))
-                {
-                    unencrypted+=letterBlock[r][c].substring(0,1);
-                }
+                unencrypted+=letterBlock[r][c].substring(0,1);
+            }
+        }
+        for (int i = unencrypted.length()-1;i>=0;i--)
+        {
+            if (unencrypted.substring(i,i+1).equals("A"))
+            {
+                unencrypted=unencrypted.substring(0,i);
+            }
+            else {
+                break;
             }
         }
         return unencrypted;
@@ -226,23 +250,43 @@ public class Encryptor
             }
         }
     }
-    public void superDeFillBlock(String str)
+    public void superDeFillBlock(String str, boolean first)
     {
         int counter =0;
-        for (int c = 0;c<letterBlock[0].length;c+=1)
-        {
-            for (int r = 0;r<letterBlock.length;r+=1)
-            {
-                if (counter<str.length())
-                {
-                    letterBlock[r][c] = str.substring(counter,counter+1);
-                    counter+=2;
-                }
-                else
-                {
-                    letterBlock[r][c] = "A";
+        if (first) {
+            for (int c = 0; c < letterBlock[0].length; c += 1) {
+                for (int r = 0; r < letterBlock.length; r += 1) {
+                    if (counter < str.length()) {
+                        letterBlock[r][c] = str.substring(counter, counter + 1);
+                        counter += 2;
+                    } else {
+                        letterBlock[r][c] = "A";
+                    }
                 }
             }
+            first = false;
+        }
+        else
+        {
+            for (int c = numCols/2; c < letterBlock[0].length; c += 1) {
+                for (int r = numRows/2; r < letterBlock.length; r += 1) {
+                    if (counter < str.length()) {
+                        letterBlock[r][c] = str.substring(counter, counter + 1);
+                        counter += 2;
+                    } else {
+                        letterBlock[r][c] = "A";
+                    }
+                }
+            }
+            first = true;
+        }
+        for (int r =0;r<letterBlock.length;r++)
+        {
+            for (int c =0;c<letterBlock[0].length;c++)
+            {
+                System.out.print(letterBlock[r][c]);
+            }
+            System.out.println(" ");
         }
     }
 }
